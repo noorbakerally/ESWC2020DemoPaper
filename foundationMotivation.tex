@@ -1,0 +1,91 @@
+\section{Motivations and Foundations}\label{sec:foundationMotivation}
+In this section, we describe the motivation and foundations of our work. More specifically, we present the context of our work in \secref{context}. \secref{requirements} describes the requirements that we have used when assessing related works in the literature. In \secref{relatedWork}, we describe related works and how they are failing to satisfy our requirements. Finally, \secref{illustratingScenario} describes an illustrating scenario that we use throughout this paper.  
+
+\subsection{Context}\label{sec:context}
+This work takes place in a private collaboration between the Orange and the french laboratories LAAS and IRIT. It revolves around the \thingin\footnote{\url{https://hellofuture.orange.com/en/thingin-the-things-graph-platform/}, last accessed 7 December 2019} platform whose aim is to maintain thorough structural and semantic description of the environments, such as cities or buildings, containing objects that may be inter-related between themselves. While \thingin is based on NGSI-LD\footnote{\url{https://www.etsi.org/newsroom/press-releases/1519-2019-01-etsi-cim-group-releases-full-feature-specification-for-context-information-exchange-in-smart-cities}},on a high-level information model, it supports import and export RDF data.
+
+\figref{contextThingIn} shows the positioning of \thingin in an Internet of Things (IoT) ecosystem. In such an ecosystem, there are objects of different kinds such as \kword{IoT devices} (e.g. sensors, actuators) and \kword{non-connected objects} (e.g. tables, chairs) . For multiple reasons, such as different protocols, standards, there is a heterogeneity of \kword{IoT platforms} for managing  devices. Consequently, there may be no single entrypoint to access description of objects. In this situation, \thingin can homogenize access to these descriptions by acting as a directory of objects.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{images/contextThingIn.pdf}
+	\caption{\thingin in an IoT ecosystem}
+	\label{fig:contextThingIn}
+\end{figure}
+
+For \thingin to be used as a catalog of objects, it must contain their descriptions. However, importing these descriptions into it is problematic as they are heterogeneous due to the diversity of data formats and domain models that exist. As mentioned above, \thingin can import data in RDF. This is where the task of facilitating the transformation of heterogeneous semi-structured data to RDF comes into play.
+
+
+
+\subsection{Requirements}\label{sec:requirements}
+Before moving on to related works, let us explicitly mention the requirements used when considering these works. We require that an approach:
+
+\paragraph{\textbf{R1. does not necessitate prior knowledge of existing ontologies}} There may be numerous ontologies usable to describing a particular raw data. An approach should not depend on this knowledge but throughout the mapping process, it provides the user with information to use a particular ontology. 
+
+\paragraph{\textbf{R2. generate initial mappings that can be customized}} To re-enforce the first requirement, generated mappings should be provided as an entrypoint to start identifying the potential ontology entities that may be used. 
+
+
+\paragraph{\textbf{R3. does not restrict the data modeling aspect}} The approach should not force a particular data modeling decision. For example, an approach should not force the use of only ontology data properties to model the properties (e.g. \kword{TOTAL}) in \rawData.
+
+\paragraph{\textbf{R4. Maximize the reuse of existing ontologies for describing the raw data}} The approach should not require creating new ontology entities to model the raw data while respecting the semantics of the reused ontologies. 
+
+\paragraph{}We believe that the above requirements are the minimum necessary conditions to facilitate the RDFization of heterogeneous semi-structured data. Let now use these requirements and proceed to the related works in the next section. 
+
+\subsection{Related Works}\label{sec:relatedWork}
+
+\input{relatedWork.tex}
+\subsection{Illustrating Scenario}\label{sec:illustratingScenario}
+In our project, we are using \thingin in an IoT context. However, due to the project's bindings, we cannot publish descriptions of objects in use. For illustration purposes, so as to use any synthetic data, we consider a parking dataset\footnote{\url{http://data.metropolegrenoble.fr/ckan/dataset/parkings-de-grenoble/resource/a6919f90-4c38-4ee0-a4ec-403db77f5a4b}, last accessed on 7 December 2019} from Grenoble open data portal\footnote{\url{http://data.metropolegrenoble.fr/}, last accessed on 7 December 2019}. \figref{sampleRawData} is part of a preview of that dataset taken directly from the data portal.
+
+In the parking dataset, there may be several columns that may be \colorbox{yellow}{little to no use}\coment{fano}{?} for external users. For example, \kword{\_id} may be contain data for an internal use, \kword{CODE} contain the same information as \kword{id} and \kword{TYPE} and \kword{type} contain the same information that may not meaningful.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.45]{images/sampleRawData.pdf}
+	\caption{Parking data from Grenoble Open Data Portal}
+	\label{fig:sampleRawData}
+\end{figure}
+
+\figref{sampleOntologyRawData} shows a possible vocabulary, that we refer to as a final mapping, for describing the parkings in \figref{sampleRawData}. The light blue and orange arrows are data and object properties respectively. As we can see, the final mapping reuses terms from several ontologies. The prefixes in the IRIs of ontology entities are shown in \reftab{prefixList}. Throughout this document, we use prefixes from this table. Also, below the IRIs of most ontology entities in \figref{sampleOntologyRawData}, the green labels refers to schema elements (i.e. column headers) in the parking data (\cf \figref{sampleOntologyRawData}) and above them is the ontology entity to which they have been mapped.
+
+In our approach, formally described in \secref{approach}, the final mapping contains at least a class to type objects in the raw data and ontology entities that describe  objects' properties. For example, in \figref{sampleOntologyRawData}, we use \kword{mv:ParkingFacility} to type the objects in \figref{sampleRawData} and, the data property \kword{wgs84:long} and class \kword{mv:Capacity} are used to model their \kword{lon} and \kword{TOTAL} property respectively. Additionally, the latter ontology entities must be related to the latter classes used for typing directly or indirectly via other ontology entities. \kword{wgs84:long} is directly related as its domain include \kword{mv:ParkingFacility}. \kword{wgs84:long} can be used directly to specify the values as its domain include \kword{mv:ParkingFacility}. Nevertheless, for \kword{mv:Capacity}, the final mapping includes \kword{mv:capacity} to link to \kword{mv:ParkingFacility} and the data property \kword{mv:maximumValue} to specify the values.  
+
+
+
+\begin{comment}
+To express the values of the object's properties in the raw data, we use data properties or classes that are in the domain of a data property. For example, in \figref{sampleOntologyRawData}, \kword{lon} is modeled using the data property \kword{wgs84:long} that is used to specify the \kword{lon}'s values. Also, \kword{TOTAL} is modeled using the class \kword{mv:Capacity}. This class is the domain of the data property \kword{mv:maximumValue}.Therefore, the data property is used to specify the \kword{TOTAL}'s values. Moreover, \kword{wgs84:long} has been used as it is in the domain of \kword{mv:ParkingFacility}. Also, \kword{mv:capacity} is added to the \descriptionVocabulary as it relates \kword{mv:ParkingFacility} to \kword{mv:Capacity}.
+\end{comment}
+
+%Additionally, in our approach, the \descriptionVocabulary must be coherent. 
+
+%More explicitly, entities in \descriptionVocabulary to represent the relation between the type and considered entities. 
+
+
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{images/sampleOntologyRawData.pdf}
+	\caption{Vocabulary to describe parking data}
+	\label{fig:sampleOntologyRawData}
+\end{figure}
+%The parking description reflects some important design decisions in our approach. First, as we can see, 
+
+\begin{table}[]
+	\centering
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Prefix} & \textbf{Vocabulary Name} & \textbf{Namespace IRI}                       \\ \hline
+		xsd             & XML Schema Definition    & http://www.w3.org/2001/XMLSchema\#           \\ \hline
+		rdfs            & RDFS                     & http://www.w3.org/2000/01/rdf-schema\#       \\ \hline
+		owl				& Web Ontology Language    & http://www.w3.org/2002/07/owl\#               \\ \hline
+		sc              & Schema.org               & http://schema.org/                           \\ \hline
+		mv              & MobiVoc                  & http://schema.mobivoc.org/                   \\ \hline
+		
+		wgs84           & WGS84                    & http://www.w3.org/2003/01/geo/wgs84\_pos\#   \\ \hline
+		dc           & Dublin Core Metadata Terms                    & http://purl.org/dc/terms/   \\ \hline
+		ign           & IGN administrative units                    & http://data.ign.fr/def/topo   \\ \hline
+		
+	\end{tabular}
+	\caption{List of Vocabulary Prefixes}
+	\label{tab:prefixList}
+\end{table}

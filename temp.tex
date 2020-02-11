@@ -1,0 +1,44 @@
+The aim of the mapping generation process is to generate a set of mappings where every mapping provides sufficient information to model some schema elements. This process requires an ontology repository or ontology and a schema description, and involves three main steps. Firstly, for every schema element, ontology entities that can be used to model the schema element are identified. Secondly, using the ontology entities and their confidences, a set possible mappings is generated. Each possible mapping contains an ontology class for typing instances and an ontology entity for every schema element. Finally, for a particular possible mapping, an pseudo ontology is generated where the ontology class is linked to the schema elements' ontology entities. Below, we describe these steps more formally and illustrate them using examples.
+  	
+  	\nb{Simple Schema Description-- >schema description}
+  	\paragraph{Preliminaries} We write $\Psi$ and $\Omega$ as the disjoint set of $\schemaDescription$s and $\simpleOntologyStructure$s.
+  	
+  	A mapping process is parameterized with an ontology structure $o=(i,\Co,\Po,\Do,\delta,r,s,l)$, a \schemaDescription $\Delta=(t,E)$, \emph{minScore} and \emph{maxEntity}. $minScore\in[0,1]$ is the minimum confidence an ontology entity must have with respect to a type or schema element to model it. This confidence is generated using a similarity function. $maxEntity\in\Z$ is the maximum number ontology entities that can be considered for modeling a particular type or schema element. 
+    
+    
+    $em:\Omega\times\R\times\Z\times\pow{\Lit}\rightarrow\pow{\IRI\times\R}$ provides a set of ontology entities and their confidences with respect to an ontology structure, a schema description, a \minScore and a \maxEntity, and a set of keyword for a schema (type) element. Every ontology entity returned must either be a class or data property from the ontology structure and their associated confidences are generated using a similarity function $Sim:\pow{\Lit}\times\IRI\times\Omega\rightarrow\R$. 
+    
+    For a particular schema element, $Sim$ takes its set of keywords, a class or data property from an ontology structure and returns a confidence in $[0,1]$. We do not further describe $Sim$ and leave it as an implementation detail. 
+    
+    With respect to $o$, $\Delta$, $\minScore$, $\maxEntity$ and a set of keywords $k_1\in\pow{\Lit}$ for a schema type or element in $\Delta$, $\forall (i_1,c_1)\in em(o,\minScore,\maxEntity,k_1)\rightarrow (i_1\in \Co(o)\cup \Do(o)) \land (c_1=Sim(k_1,i_1,o)) \land (c_1 \geq \minScore)$
+    
+    \maxEntity constraints the number of ontology entities for a particular schema type or element. More formally, $|em(o,\minScore,\maxEntity,k_1)|\leq\maxEntity$
+    
+    
+    \paragraph{\textbf{Step2}: Generate a set of possible mapping} Using the output from step 1, a set of possible mapping is generated. A possible mapping contain ontology entities to model the schema type and elements and associated confidences. 
+    
+    \begin{definition}[Possible mapping]\label{def:possibleMapping}
+    	For an ontology structure $o$, a \schemaDescription $\Delta=(t^{\Delta},E^{\Delta})$ and $\minScore\in [0,1]$, a possible mapping is a pair $(t^{p},E^{p})$ where $t^{p}\in\IRI\times\R$ and $E^{p}\subseteq\Lit\times\IRI\times\R$. $t^{p}=(i_t,c_t)$ means the class with IRI $i_t\in\Co$ can model the schema type described by $t^{\Delta}$ with a confidence of $c_t=Sim(t^{\Delta},i_t,o)$. $(e^{p},i_e,c_e)\in E^{p}$ means that the ontology entity with IRI $i_e\in\Co(o)\cup\Do(o)$ can model the schema element $e^{p}\in e(E^{\Delta})$ described by $k_e=k(e,E^{p})$ with a confidence of $c_e=Sim(k_e,i_e,o)$.
+    \end{definition} 
+    
+    
+    $pm:\Omega\times\Psi\times\R\times\Z\rightarrow\pow{\IRI\times\R\times\pow{\Lit\times\IRI\times\R}}$ generates a set of possible mappings. Given an ontology structure $o$, a \schemaDescription $\Delta=(T,E)$, a \minScore $s$ and \maxEntity $m$, 
+    $$pm(o,\Delta,s,m) = em(o,s,m,T)\times\bigtimes_{(e_i,K_i)\in E} \{e_i\}\times em(o,s,m,K_i)$$
+    \nb{define e() and k()}
+    
+    
+    \paragraph{\textbf{Step3}: For each possible mapping, extract the part of the ontology repository to describe each schema element in it with respect to the type}
+    	
+    \nb{describe path}
+    
+    \begin{definition}[Final mapping]\label{def:finalMapping}
+    	Given an ontology structure $o$ and \simpleSchema $\Delta$ , a final mapping is a pair $(p,\Theta)$ where $p=(t,E)$ is a possible mapping and $\Theta\subseteq\Lit\times\Omega$ is the set containing ontology structures for mapped schema elements. $(e_i,o_i)\in\Theta$ means that the ontology structure $o_i$ contains ontology entities for modeling schema element $e_i$ having a potential candidate in $E$ with respect to the type in $t$. More formally, $(e_i,o_i)\in\Theta$ implicates the following:
+    	\begin{itemize}
+    		\item $\exists m_i\in[0,1], (e_i,m_i)\in E$
+    		\item $o_i \subOnt o$
+    		\item $o_i = path(\Co(t),e_i,o)$
+    	\end{itemize}
+    	
+    	
+    	
+    \end{definition} 

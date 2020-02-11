@@ -1,0 +1,280 @@
+% This is samplepaper.tex, a sample chapter demonstrating the
+% LLNCS macro package for Springer Computer Science proceedings;
+% Version 2.20 of 2017/10/04
+%
+\documentclass[runningheads]{llncs}
+%
+\usepackage{graphicx}
+\usepackage{xspace}
+\usepackage{comment}
+\usepackage{standalone}
+\usepackage{xcolor}
+\usepackage{multirow}
+\usepackage{mathtools}
+\usepackage[inline]{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xifthen}
+\usepackage[chorus]{emf}
+%\usepackage{mathabx}
+%\usepackage{unicode-math}
+%SAVING SPACE
+\usepackage[moderate]{savetrees}
+
+\begin{comment}
+Potential Conferences:
+Research
+=========
+- http://www.guide2research.com/conference/wims-2020
+-https://cikm2020.org/call-for-papers-full-and-short-research-papers/
+- http://wi2020.vcrab.com.au/
+- ISWC: Deadline: 27 March, Content: Formalization + Approach global
+- Web Intelligence: 1 June
+- CIKM: http://www.cikmconference.org/, Deadline: 1 May
+
+Demo
+=====
+- ESWC, Deadline: March 12, 2020
+- ISWC 
+
+Journal
+=======
+
+Work Plan
+==========
+Week1: Formalization
+Week2: Experimentation
+
+
+February: Complex 
+\end{comment}
+
+
+
+%below figure
+%\setlength{\belowcaptionskip}{-15pt}
+
+% Used for displaying a sample figure. If possible, figure files should
+% be included in EPS format.
+%
+% If you use the hyperref package, please uncomment the following line
+% to display URLs in blue roman font according to Springer's eBook style:
+\PassOptionsToPackage{hyphens}{url}
+\usepackage[hidelinks]{hyperref}
+\renewcommand\UrlFont{\color{blue}\rmfamily}
+\newcommand\bigforall{\mbox{\Large $\mathsurround0pt\forall$}}
+ \newcommand\bigexist{\mbox{\Large $\mathsurround0pt\exists$}} 
+ \newcommand\bigCurlyO{\mbox{\Large $\mathsurround0pt \{$}} 
+ \newcommand\bigCurlyC{\mbox{\Large $\mathsurround0pt \}$}} 
+  
+  \newcommand\bigParO{\mbox{\Large $\mathsurround0pt($}}
+  \newcommand\bigParC{\mbox{\Large $\mathsurround0pt)$}}
+  
+\definecolor{nbColor}{rgb}{0,0,1}
+\definecolor{nhColor}{rgb}{0,0.5,0.2}
+\definecolor{anycolor}{rgb}{1,0.5,0.2}
+\newcommand{\nb}[1]{\textcolor{nbColor}{\textbf{[nb: #1]}}}
+\newcommand{\nath}[1]{\textcolor{nhColor}{\textbf{[nh: #1]}}}
+\newcommand{\coment}[2]{\textcolor{anycolor}{\textbf{[#1: #2]}}}
+
+
+
+\newcommand{\pow}[1]{\ensuremath{2^{#1}}\xspace}
+\newcommand{\IRI}{\ensuremath{\mathbf{IRI}}\xspace}
+\newcommand{\Lit}{\ensuremath{\mathbf{L}}\xspace}
+\newcommand{\thingin}{\textit{Thing~in}\xspace}
+\newcommand{\lstref}[1]{Listing~\ref{lst:#1}}
+\newcommand{\lstRefline}[2]{Listing~\ref{lst:#1}, Line~\ref{line:#2}}
+\newcommand{\appref}[1]{Appendix~\ref{app:#1}}
+\newcommand{\reftab}[1]{Table~\ref{tab:#1}}
+\newcommand{\tabref}[1]{Table~\ref{tab:#1}}
+\newcommand{\secref}[1]{Section~\ref{sec:#1}}
+\newcommand{\qref}[1]{~\ref{eq:#1}}
+\newcommand{\figref}[1]{Figure~\ref{fig:#1}}
+\newcommand{\figRefPart}[2]{Figure~\ref{fig:#1} (#2)}
+\newcommand{\kword}[1]{\ensuremath{\texttt{#1}}}
+\newcommand{\prefixWord}[1]{\texttt{#1}}
+\newcommand{\cf}{\textit{cf.} \xspace}
+\newcommand{\dataelement}{\textit{data element}\xspace}
+\newcommand{\dataelements}{\textit{data elements}\xspace}
+\newcommand{\rawData}{\figref{sampleRawData}\xspace}
+\newcommand{\refParkingData}{\figref{sampleRawData}\xspace}
+
+\newcommand{\wrt}{with respect to\xspace}
+
+
+
+\newcommand{\schemaType}{\textit{schema type}\xspace}
+\newcommand{\schemaElements}{\textit{schema elements}\xspace}
+\newcommand{\schemaElement}{\textit{schema element}\xspace}
+
+\newcommand{\simpleSchema}{\textit{simple schema}\xspace}
+\newcommand{\simpleSchemas}{\textit{simple schema}s\xspace}
+\newcommand{\SimpleSchema}{\textit{Simple schema}\xspace}
+\newcommand{\SimpleSchemas}{\textit{Simple schemas}\xspace}
+
+
+%minimally connected simple ontology structure
+\newcommand{\connectedOntologyStructure}{\textit{type property path structure}\xspace}
+\newcommand{\ConnectedOntologyStructure}{\textit{Type property path structure}\xspace}
+
+
+\newcommand{\descriptionVocabulary}{\textit{Description vocabulary}\xspace}
+
+\newcommand{\elementVocabulary}{\textit{Element vocabulary}\xspace}
+\newcommand{\finalMapping}{\textit{Final mapping}\xspace}
+
+\newcommand{\frontendMA}{\textit{Front-end mapping application}\xspace}
+\newcommand{\vocabPathGen}{\textit{Vocabulary path generator}\xspace}
+\newcommand{\DataPropertyPath}{\textit{Data property path}\xspace}
+%Simple ontology structure
+%==========================
+\newcommand{\vocabularyStructure}{\textit{Vocabulary structure}\xspace}
+
+%Schema Description
+%==================
+\newcommand{\schemaDescription}{\textit{schema description}\xspace}
+\newcommand{\schemaDescriptions}{\textit{schema descriptions}\xspace}
+
+%Mapping Generation System
+%==========================
+\newcommand{\mappingGenerationSystem}{\textit{mapping generation system}\xspace}
+\newcommand{\MappingGenerationSystem}{\textit{Mapping generation system}\xspace}
+
+
+\newcommand{\defref}[1]{Definition~\ref{def:#1}}
+
+\newcommand{\Eo}{\ensuremath{\emf}\xspace}
+\newcommand{\Co}{\ensuremath{\mathcal{C}}\xspace}
+\newcommand{\Po}{\ensuremath{\mathcal{P}}\xspace}
+\newcommand{\Do}{\ensuremath{\mathcal{D}}\xspace}
+\newcommand{\del}{\ensuremath{\mathcal{\delta}}\xspace}
+\newcommand{\So}{\ensuremath{\mathcal{S}}\xspace}
+
+\newcommand{\minScore}{\ensuremath{minScore}\xspace}
+\newcommand{\maxEntity}{\ensuremath{maxEntity}\xspace}
+
+\newcommand{\subOnt}{\ensuremath{\subseteq}\xspace}
+
+\newcommand{\R}{\ensuremath{\mathbb{R}}\xspace}
+\newcommand{\Z}{\ensuremath{\mathbb{Z^{+}}}\xspace}
+
+
+\newcommand{\resref}[1]{Result~\ref{res:#1}}
+
+\newcommand{\tuple}[1]{\ensuremath{\langle#1\rangle}}
+
+\newcommand{\bOc}{\ensuremath{\big{\{}}}
+\newcommand{\bCc}{\ensuremath{\big{\}}}}
+
+%Symbols in formalization
+\newcommand{\symSimpleSchema}[1]{\ensuremath{\ifthenelse{\isempty{#1}}{\sigma}{\sigma_#1}}\xspace}
+
+\newcommand{\symTypeDescription}[1]{\ensuremath{\ifthenelse{\isempty{#1}}
+		{\mathfrak{t}\xspace}{\mathfrak{t}_#1}\xspace}}
+	
+\newcommand{\symElementsDescription}[1]{\ensuremath{\ifthenelse{\isempty{#1}}
+		{\mathcal{E}\xspace}{\mathcal{E}_#1}\xspace}}
+	
+\newcommand{\symOntology}[1]{\ensuremath{\ifthenelse{\isempty{#1}}
+		{v\xspace}{v_#1}\xspace}}
+
+\newcommand{\symSchemaSet}{\ensuremath{\mathbb{S}\xspace}}
+\newcommand{\symOntologySet}{\ensuremath{\mathbb{V}\xspace}}
+\newcommand{\symOntologyMerge}{\ensuremath{\uplus}\xspace}
+\newcommand{\symSchemaDescriptionSet}{\ensuremath{\mathbb{D}}\xspace}
+\newcommand{\symSubVocabulary}{\ensuremath{\;\underline{\Subset}\;}\xspace}
+
+\newcommand{\symSimCal}{\ensuremath{f_s}\xspace}
+\newcommand{\symConMap}{\ensuremath{f_c}\xspace}
+\newcommand{\symPathDesGen}{\ensuremath{f_e}\xspace}
+\newcommand{\symSchemaDes}{\ensuremath{f_d}\xspace}
+\newcommand{\symProb}{\ensuremath{\R}\xspace}
+
+\newcommand{\symPathGen}{\ensuremath{f_v}\xspace}
+\newcommand{\symPath}{\ensuremath{\mathfrak{p}}\xspace}
+\newcommand{\symTriple}{\ensuremath{\mathfrak{t}}\xspace}
+
+\newcommand{\symMappedElements}{\ensuremath{\Sigma}\xspace}
+\newcommand{\symElementOntologies}{\ensuremath{\Theta}\xspace}
+
+\newcommand{\Dso}{\ensuremath{\delta}\xspace}
+\newcommand{\Rso}{\ensuremath{r}\xspace}
+
+
+
+
+\makeatletter
+\providecommand*{\cupdot}{%
+	\mathbin{%
+		\mathpalette\@cupdot{}%
+	}%
+}
+\newcommand*{\@cupdot}[2]{%
+	\ooalign{%
+		$\m@th#1\bigcup$\cr
+		\hidewidth$\m@th#1\bullet$\hidewidth
+	}%
+}
+\makeatother
+
+
+
+\begin{document}
+%
+%\title{Semi-automatic RDFization of data in heterogeneous formats\thanks{Supported by organization x.}}
+\title{Semi-automatic RDFization using automatically generated initial mappings}
+
+%
+
+
+%\titlerunning{Abbreviated paper title}
+% If the paper title is too long for the running head, you can set
+% an abbreviated paper title here
+%
+\author{Noorani Bakerally\inst{1,2}\underline{\underline{}}\and
+Second Author\inst{2,3}\orcidID{1111-2222-3333-4444} \and
+Third Author\inst{3}\orcidID{2222--3333-4444-5555}}
+%
+\authorrunning{F. Author et al.}
+% First names are abbreviated in the running head.
+% If there are more than two authors, 'et al.' is used.
+%
+\institute{Princeton University, Princeton NJ 08544, USA \and
+Springer Heidelberg, Tiergartenstr. 17, 69121 Heidelberg, Germany
+\email{lncs@springer.com}\\
+\url{http://www.springer.com/gp/computer-science/lncs} \and
+ABC Institute, Rupert-Karls-University Heidelberg, Heidelberg, Germany\\
+\email{\{abc,lncs\}@uni-heidelberg.de}}
+%
+\maketitle              % typeset the header of the contribution
+%
+\begin{abstract}
+\input{abstract.tex}
+\keywords{RDF, Data transformation, Semi-automatic approach}
+\end{abstract}
+%
+%
+%
+\input{whole.tex}
+\input{introduction.tex}
+
+
+
+%\input{foundationMotivation.tex}
+
+
+\input{approach.tex}    
+
+\input{implementation.tex}
+
+
+\input{evaluation.tex}
+\input{conclusion.tex}
+
+
+
+
+\bibliographystyle{unsrt}
+\bibliography{references}
+\end{document}

@@ -1,0 +1,139 @@
+%\subsection{Related Work}\label{sec:relatedWorks}
+
+
+
+%criteria:
+%-knowledge of ontologies
+%-data modeling
+%-no initial mappings
+
+%mapping language
+%=================
+%- thick knowledge stack
+%	- 
+	
+%Mapping Language (implicit or explicit)
+%----------------------------------------
+%Facilitate the transformation of raw data to RDF, but user must have a knolewdge of the ontologies they want to
+%use
+%- R2RML~\cite{R2RML_W3C:12}
+%" r2rml[3]  is  thew3c -recommended language to dene mappings to generaterdf from data derived from relational databases"
+
+%- RML~\cite{dimou2014rml}
+%"generation of data inrdf representation based on multiple heterogeneous data sources, e.g.,xmlandjson"
+%- XSPARQL
+%- GRADDLE
+%- SPARQL Generate
+%- Direct Mapping 
+
+
+
+
+%some lines
+%Semi-Automatic
+%---------------
+% LOVER -http://ansgarscherp.net/publications/pdf/W24-SchaibleEtAl-LOVER-SupportForModelingDataUsingLinkedOpenVocabularies.pdf
+%- Datalift [1]
+%- LodRefine [2,Sec.2]
+%- Sheet2RDF~\cite{fiorelli2015sheet2rdf}
+%Must specify a subject
+%Must annotate each header with rdf schema
+%"Next, the mappings are complemented with data fractions from the databases.sheet2rdf[10] is a platform that uses apearl[11 ] document to map data in spreadsheets tordf. Itsgui allow users to view the source data, define the mappings by editing thepearl document directly, and view the resulting rdf through a tabular-structure. However, the adoption of the tool decreases because users need knowledge aboutpearl to edit the mappings"
+%- RML Editor
+%- chatbots
+
+We expect from an automatic tool to transform semi-structure data to RDF, the following
+requirements:
+\begin{enumerate*}[label={\alph*)},font={\bfseries}]
+	\item \emph{Data modeling}: the user do not have to care how the data should be 
+	modelised. That is to say, if he should modelise columns as class or properties.
+	\item \emph{No prior knowledge on ontologies}: the end-user should not need to
+	know which ontologies he should use to modelised his data, nor how to use the 
+	ontologies.
+	\item \emph{No initial mapping}: to transform his data the end-user only need to
+	provide a raw data. However, he can enhance the transformation by provinding
+	simple keywords about columns.
+\end{enumerate*}
+
+
+Many works have been done to help end-user to transform raw data in RDF data. 
+We can split those work into
+two main categories. The mapping languages and semi-automatic approches.
+
+\paragraph{Mapping languages} aims at ease the transformation process. R2RML~\cite{R2RML_W3C:12} is a mapping
+lanaguage to transform relational database to RDF data and is a recommendation from the W3C. 
+RML~\cite{dimou2014rml} enhance the previous approach by handling heterogenous data sources in entry of the
+transformation process and is subject centric. SPARQL-GENERATE~\cite{lefranccois2016flexible} allow the
+transformation of heterogenous data sources and previous transformation operation on the original dataset.
+However, all of those approches do not fulfill our requirements.
+Indeed, they are only a step in the transformation process.
+Our vision of transforming semi-structured data to RDF is broader and take also in consideration the
+assistance to create the mappings.
+
+\paragraph{Semi-Automatic approches} go one step futher compared to mapping languages, because they assist
+the user during the mapping process. The approach Sheet2RDF\cite{fiorelli2015sheet2rdf} propose both
+a command line tool and a user interface tool. However, to use this approach a prior knowledge about
+PEARL~\cite{pazienza2012pearl} mapping is required. Therefore it do not fulfill or \emph{Data Modeling}
+requirement.
+
+RMLEditor~\cite{heyvaert2016rmleditor} is a graphical interface for RML~\cite{dimou2014rml}. 
+It has two modes, one without the editor, where the end-user have to import the raw data and the RML mapping.
+A second mode where the end-user do not need to have prior knowledge about the mapping language's
+specification. Nevertheless, in both scenarios the end-user need to provide initial
+mappings, which do not complies with our requirements.
+
+% "context information about the dataset which has to be modeled as Linked Data"
+% By using the Swoogle API for a search based on exact string match
+% as it is important to get the list of elements which are supposed to be mapped to classes and properties from existing vocabularies
+LOVER~\cite{schaible2013lover} it provides the ontology engineer search mechanism for
+classes and properties with metadata about classes and properties and
+usage example. In a step of the transformation process, the ontologie engineer is 
+supposed to enumerate the elements to be mapped, and if they have to be mapped to classes
+or properties. Therefore, the end-user  need to have some knowledge in 
+\emph{Data modeling}. Whereas, in our approach we want the modeling part to be 
+transparent to the end-user.
+
+% Open Refine
+% rename or remove columns
+% versionning of operations on the dataset
+% sort, faceting, detecting duplicates, applying text filter, using simple cell transformation, removing matching rows
+% reconcile our cell values with Freebase URLs two mode one for values already in freebase, one if columns values are not in freebase
+% 
+% Two types of reconciliation 1) value of cells are Freebase ids 2) Terms not related to freebase identifier (Freebase receonciliation service)
+% Freebase reconciliation service propose 3 modes 1) decide against what type of records you want to reconsile (list)contacted the service with part of your data to try to guess the type of your column data
+% reconciliation against type (the user choose), reconcile against no particular type -> find URL for each unique cell value and define best candidates
+% 2) Auto-match candidate with high confidence 
+% 3) allow to send additional information to de reconciliation service by considering several columns
+% reconcile only on one dataset?
+% reconciliation per cell value? "OpenRefine reconciled the value with a URL"
+Open Refine~\cite{verborgh2013using} is a tool to transform semi-structured data where basic operations such as sorting data, detecting duplicates, applying text
+filter, etc \dots can be performed. One of the operation that can be performed is to reconciliate data with an RDF dataset.
+Several modes are possible to perform the transformation, but the aim is to reconciliate each individual cell values to existing URL
+in the given dataset. Reconciliation is a way to transform raw data to RDF data but is different from generating mappings.
+Indeed, reconciliation focus on individuals cells values, whereas mappings generation often consider the overall structure of the files.
+Even if those two approaches can be complementary, reconciliation require to know pertinent real dataset.
+
+
+% Reconciliation identifying multiple representations of the same real-world object
+An RDF extension~\cite{maali2011re} is available for Open Refine~\cite{verborgh2013using}, where reconciliation against existing
+databses is still available. In addition, the tool allow user to define a skeleton of mappings. But you have to define which
+concepts to use and relation between terms. Whereas in our approach we want to assist the end-user in the creation of mappings.
+However, reconciliation is complementary to our approach.
+
+
+% our tool uses two knowl-edge graphs, DBpedia and YAGO, the ontologies of LOV
+% from a set of instances of each column, our tool searches corresponding entities in DBpedia and YAGO
+% saturate mapping with OL and RDFs eg ol:equivalentTo
+Another approach is based on a chat-bot tool~\cite{moreau2019semi} wich can generate RDF mapping from structured data by asking simple question to the user.
+It uses reconciliation against DBpedia and YAGO to infer classes of columns. Then it uses LOV~\footnote{\url{https://lov.linkeddata.es/dataset/lov/}}
+to find properties. To confirm choices it ask the user to answer simple queries. Even if this approach requires no knowledge in RDF and Data Modeling
+it is limited by the reconciliation phase. Indeed, firstly there is, currently, only two datasets against which the reconciliation can be performed. Secondly,
+it makes the hypothesis that a matching URIs will be find, which will not be possible on geonames~\footnote{\url{https://www.geonames.org/}} 
+for example, such as all URIs are random numbers.
+
+DataLift~\cite{scharffe2012enabling} is a platform to publish linked data. It assist the user through the mapping generation and linkind dataset
+step. However, as mentionned by the authors, the user needs knowledge in the Semantic Web (RDF, RDFS/OWL and SPARQL).
+
+Karma
+
+Juma
