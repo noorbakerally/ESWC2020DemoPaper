@@ -217,13 +217,17 @@ February: Complex
 	}%
 }
 \makeatother
+\usepackage{xcolor}
+\definecolor{babyblueeyes}{rgb}{0.63, 0.79, 0.95}
+\usepackage{colortbl}
 
-
+\newcolumntype{g}{>{\columncolor[gray]{0.8}}c}
+\newcolumntype{t}{>{\columncolor{babyblueeyes}}c}
 
 \begin{document}
 %
 %\title{Semi-automatic RDFization of data in heterogeneous formats\thanks{Supported by organization x.}}
-\title{Semi-automatic RDFization using automatically generated initial mappings}
+\title{Semi-automatic RDFization using automatically generated mappings}
 
 %
 
@@ -233,19 +237,19 @@ February: Complex
 % an abbreviated paper title here
 %
 \author{Noorani Bakerally\inst{1,2}\underline{\underline{}}\and
-Second Author\inst{2,3}\orcidID{1111-2222-3333-4444} \and
-Third Author\inst{3}\orcidID{2222--3333-4444-5555}}
+Cyrille Bareau\inst{3} \and Fabrice Blache\inst{3} \and Sébastien Bolle\inst{3} \and Christelle Ecrepont\inst{2} \and Pauline Folz\inst{3} \and Nathalie Hernandez\inst{1} \and Thierry Monteil\inst{2}  \and Gilles Privat\inst{3} \and Fano Ramparany\inst{3}}
+
 %
-\authorrunning{F. Author et al.}
+\authorrunning{N. Bakerally et al.}
 % First names are abbreviated in the running head.
 % If there are more than two authors, 'et al.' is used.
 %
-\institute{Princeton University, Princeton NJ 08544, USA \and
-Springer Heidelberg, Tiergartenstr. 17, 69121 Heidelberg, Germany
-\email{lncs@springer.com}\\
+\institute{IRIT, Toulouse, France \email{\{firstname.lastname\}@irit.fr} \and
+LAAS-CNRS, National Institut of applied Sciences of Toulouse, Toulouse 31400,
+\email{\{firstname.lastname\}@laas.fr}\\
 \url{http://www.springer.com/gp/computer-science/lncs} \and
-ABC Institute, Rupert-Karls-University Heidelberg, Heidelberg, Germany\\
-\email{\{abc,lncs\}@uni-heidelberg.de}}
+Orange Labs, Meylan, France\\
+\email{\{firstname.lastname\}@orange.com}}
 %
 \maketitle              % typeset the header of the contribution
 %

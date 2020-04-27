@@ -11,17 +11,28 @@
 %	\label{fig:expMappingParking}
 %\end{figure}
 
+During this demonstration, we intend to RDFize Grenoble parking dataset partly shown in \figref{sampleRawData}. We perform two experiments: \kword{NK}and \kword{WK}. In \kword{NK}, we only specify the \kword{type description} with keywords. In \kword{WK}, we also specify keywords for interested columns. These keywords are shown in \tabref{overviewElementMappings}. Results are despicted in Table~\ref{tab:expGrenoble}. As we can see in \tabref{expGrenoble} and the video, adding keywords greatly improve the quality of mappings that are generated.
+
+%\vspace{-0.5cm}
+
+\section{Conclusion}
+We have tested our approach on real datasets from open data portals and the results were promising. However, there are three main limitations. Firstly, the success of the approach depends much on the selection of keywords. It may not be easy for the user to define the keywords that will correspond to labels of ontologies entities. A extension of the approach that will suggest keywords according to these labels is currently being implemented. Secondly, as mentioned in \secref{approach}, our approach can consider raw data containing only one type of object described by several data properties. However in some cases, the object can be link in its description to other objets. Approaches dealing with entity resolution and entity linking could be used.  
+Thirdly, as of now, there are no alignments between the ontologies in the ontology repository. The existence of these alignments can improve the quality of the generated mappings.
+
+
+
 \begin{table}[]
     \centering
-    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+    \begin{tabular}{|c|c|c|c|c|c|c|}
         \hline
-         & id & CODE & LIBELLE & ADRESSE & TYPE & TOTAL & type & id & lon & lat \\
+         &   LIBELLE & ADRESSE & TOTAL & id & lon & lat \\
         \hline
-        NK & & & & & & & & & & \\
+        NK & -- & schema:adress & --&  mobivoc:id & -- & -- \\
         \hline
-        WK & & & & & & & & & & \\
+        WK & schema:label & schema:adress & mv:Capacity & dc:id & geo:long & geo:lat \\
         \hline
     \end{tabular}
-    \caption{Caption}
-    \label{tab:my_label}
+    \caption{Initial mappings without keywords (\texttt{NK}) and with keywords (\texttt{WK})}
+    \label{tab:expGrenoble}
 \end{table}
+\vspace{-0.5cm}

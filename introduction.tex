@@ -2,30 +2,34 @@
 
 To realize the vision of the Semantic Web, the conformance of existing data to the RDF model is a necessary condition. Yet, it is a fact that most of the data available on the Web do not satisfy this requirement. A number of tools have been developed to facilitate the transition to RDF. Much of them are founded on well-defined mapping languages (R2RML~\cite{R2RML_W3C:12}, RML~\cite{dimou2014rml}, SPARQL-Generate~\cite{lefranccois2016flexible}, etc.). Using mapping languages directly is complex. This is because they have a steep learning curve and require knowing the syntax and semantics of the languages in addition to the Semantic Web stack and ontologies that can be used. 
 
-Besides mapping languages, there are automatic and semi-automatic RDFizers. We ignore automatic RDFizers (e.g. Direct Mapping~\cite{Direct_Mapping_W3C:12}, Docker2RDF~\cite{ayed2017docker2rdf}, etc.) as their transformation cannot be customized or they are restricted for specific domain models. The minor category of works (RMLEditor~\cite{heyvaert2016rmleditor}, OpenRefine~\cite{verborgh2013using}, etc.) around semi-automatic RDFizers is our main interest. We focus on this category due to their ability in aiding human experts by automating complex tasks without hindering flexibility by incorporating them for decision making and validation. The main problem with the latter tools is that they mostly only provide a graphical interface with some facilities for searching through ontologies. However, they still rely on end-users with respect to their knowledge about ontologies and data modeling using them.
+Besides mapping languages, there are automatic and semi-automatic RDFizers. We ignore automatic RDFizers (e.g. Direct Mapping~\cite{Direct_Mapping_W3C:12}, Docker2RDF~\cite{ayed2017docker2rdf}, etc.) as their transformation cannot be customized or they are restricted for specific domain models. The minor category of works (RMLEditor~\cite{heyvaert2016rmleditor}, OpenRefine~\cite{verborgh2013using}, etc.) around semi-automatic RDFizers is our main interest. We focus on this category due to their ability in aiding end-users by automating complex tasks without hindering flexibility by incorporating them for decision making and validation. The main problem with the latter tools is that they mostly only provide a graphical interface with some facilities for searching through ontologies. By doing so, they still rely on end-users with respect to their knowledge about ontologies and data modeling using them.
 
-In this work, our aim is to provide an approach to further facilitate semi-automatic RDFizers by automatically generating initial mappings without prior knowledge about ontologies, that may then be customized by end-users. The originality of our contribution is that it automatically generates several holistic mappings and try best to provide an exhaustive description for a given type of instances. Our approach is not an alternative but complementary to existing tools. In the rest of this paper, we describe our approach and its implementation in \secref{approach} and \secref{implementation} respectively. Finally, we demonstrate our implementation using real datasets from open data portal. %Finally, we describe \secref{futureWork} that are we are currently working on.   
+In this work, our aim is to provide an approach to further facilitate semi-automatic RDFizers by automatically generating mappings without prior knowledge about ontologies, that may then be customized by end-users. The originality of our contribution is that it automatically generates several holistic mappings and try best to provide an exhaustive description for a given type of objects. To ensure exhaustivity, the type of objects can be described with entities defined in several ontologies as long as semantic coherence is maintained. Our approach is not an alternative but complementary to existing tools. In the rest of this paper, we describe our approach and its implementation in \secref{approach} and \secref{implementation} respectively. Finally, we demonstrate our implementation using a real datasets from open data portal. \coment{Pauline}{a real dataset we only have one + add line for conclusion section}
+
+%Finally, we describe \secref{futureWork} that are we are currently working on.   
 
 
 
 \section{Our Approach}\label{sec:approach}
-Our approach to generate initial mappings consists of four main steps:\begin{enumerate*}[label={\roman*)},font={\color{red!50!black}\bfseries}]
-\item \kword{Generate Schema Descriptions}
-\item \kword{Generate candidates}
-\item \kword{Generate candidate mappings}
-\item \kword{Refine candidate mappings}.
+We use a divide-and-conquer strategy to RDFize non-RDF data. The base case of this strategy occurs when the non-RDF data describes only one type of object. In this paper, our approach is focused on this base case. Our approach to generate final mappings consists of four main steps:
+\begin{enumerate*}[label={\roman*)},font={\color{black}\bfseries}]
+\item \hyphenation{\kword{Generate Schema Descriptions}}
+\item {\kword{Generate} \kword{candidates}
+\item \hyphenation{\kword{Generate candidate mappings}}
+\item \kword{Refine candidate mappings,}
 \end{enumerate*}
- as shown in \figref{overviewApproach}. For illustration purposes, we consider a parking dataset\footnote{\url{http://data.metropolegrenoble.fr/ckan/dataset/parkings-de-grenoble/resource/a6919f90-4c38-4ee0-a4ec-403db77f5a4b}, last accessed on 7 December 2019} from Grenoble open data portal\footnote{\url{http://data.metropolegrenoble.fr/}, last accessed on 7 December 2019}. \figref{sampleRawData} is part of a preview of that dataset taken directly from the data portal.
-
+ as shown in \figref{overviewApproach}. The refined mapping selected by the user is then automatically represented in a mapping language and used to generetaed the RDF representation of the data.
+ 
+ For illustration purposes, we consider a parking dataset\footnote{\url{http://data.metropolegrenoble.fr/ckan/dataset/parkings-de-grenoble/resource/a6919f90-4c38-4ee0-a4ec-403db77f5a4b}, last accessed on 7 December 2019} from Grenoble open data portal\footnote{\url{http://data.metropolegrenoble.fr/}, last accessed on 7 December 2019}. \figref{sampleRawData} is part of a preview of that dataset taken directly from the data portal.
+%\vspace{-0.5cm}
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.45]{images/sampleRawData.pdf}
 	\caption{Parking data from Grenoble Open Data Portal}
 	\label{fig:sampleRawData}
 \end{figure}
-
-Moreover, our approach uses an \kword{Ontology repository}, as despicted in~\figref{overviewApproach}. Suppose that it contains the vocabularies MobiVoc\footnote{\url{https://www.mobivoc.org/}, last accessed 10 February 2020}, Schema.org\footnote{\url{https://schema.org/}, last accessed 10 February 2020}, WGS84\footnote{\url{https://www.w3.org/2003/01/geo/}, last accessed 10 February 2020} and Dublin Core Metadata Terms\footnote{\url{https://www.dublincore.org/specifications/dublin-core/dcmi-terms/}, last accessed 10 February 2020}. In our approach, to capture the background knowledge about the schema used in the raw data, firstly, we generate a \kword{Schema description} consisting of a \kword{Type description} and a \kword{Elements description}. \kword{Type Description} characterizes using keywords the type of objects described by the schema. \kword{Elements description} characterizes using keywords the schema elements (e.g. \kword{lon} in \figref{sampleRawData}).
-
+%\vspace{-0.5cm}
+Moreover, our approach uses an \kword{Ontology repository}, as despicted in~\figref{overviewApproach}. Suppose that it contains the vocabularies MobiVoc\footnote{\url{https://www.mobivoc.org/}, last accessed 10 February 2020}, Schema.org\footnote{\url{https://schema.org/}, last accessed 10 February 2020}, WGS84\footnote{\url{https://www.w3.org/2003/01/geo/}, last accessed 10 February 2020} and Dublin Core Metadata Terms\footnote{\url{https://www.dublincore.org/specifications/dublin-core/dcmi-terms/}, last accessed 10 February 2020}. 
 \begin{figure}
 	\centering
 	\includegraphics[scale=0.55]{images/GeneralApproachPaper1.pdf}
@@ -36,13 +40,16 @@ Moreover, our approach uses an \kword{Ontology repository}, as despicted in~\fig
 Below, we proceed with the descriptions of the steps in our approach.
 
 \paragraph{Generate Schema Description}
-In our approach, we suppose that the file to be transformed contains only one type of object. We make the difference between the type of object (\kword{Type element}) and it's properties (\kword{Schema element}). To capture the background knowledge about the schema used in the raw data, firstly, we generate a \kword{Schema description} consisting of a \kword{Type description} and \kword{Elements description}.
-\kword{Type Description} characterizes the type of objects described by the schema and \kword{Elements descriptions} characterizes the schema elements (e.g. \kword{lon} in \figref{sampleRawData}). For both, \kword{Type Description} and \kword{Elements Description}, the description can be enriched by \kword{keywords} added by the end-user.
+In our approach, we suppose that the file to be transformed contains only one type of object. We make the difference between the type of object (\kword{Type element}) and its properties (\kword{Schema element}). To capture the background knowledge about the schema used in the raw data, firstly, we generate a \kword{Schema description} consisting of a \kword{Type description} and \kword{Elements} \kword{description}, via a user interface (\cf \secref{implementation}) with the involvement of the end-user.
+\coment{Pauline}{remove firstly or and secondly}
+\kword{Type Description} characterizes the type of objects described by the schema and \kword{Elements descriptions} characterizes the schema elements (e.g. \kword{lon} in \figref{sampleRawData}). 
+The \kword{schema description} may not contain a description for all columns. For example, the schema description of the data in \figref{sampleRawData} may omit the description of the column \kword{CODE} as it contains the same information as the column \kword{id}. In this way, uninterested columns may be ignored.
+
 
 \paragraph{Generate candidates}
 Using an \kword{Ontology repository}, and the \kword{Schema description}, a set of candidate classes are generated for typing objects, thanks to \kword{Type description} and a set of candidate data properties or classes are generated for modeling the schema element, thanks to \kword{Elements description}.
-The \kword{Schema description} is then converted into a pseudo-ontology in OWL and simple ontology matching approaches presented in [citation] are used to generate the candidate for the \kword{Type element} and \kword{Schema elements}.
-\tabref{overviewElementMappings} shows a schema description for the schema of \figref{sampleRawData} and generated ontology entities for its elements. For example, the objects' type in \figref{sampleRawData} can be described by the keyword `parking facility'. Using the latter description, the classes \kword{mv:ParkingFacility} and \kword{sc:Park} are generated to type the objects. Similarly, the schema element \kword{TOTAL} is described using the keywords `capacity' and `total' using which the class \kword{mv:Capacity} and data property \kword{sc:totalTime} are candidates generated to model it. The candidate proposal \kword{sc:totalTime} is not appropriate to model \kword{TOTAL} as its semantics is not compatible with the latter. To determine the appropriateness of an entity, we also generated a confidence. For simplicity sake, we omit this information from \tabref{overviewElementMappings}.
+The \kword{Schema description} is then converted into a pseudo-ontology in OWL and simple ontology matching approaches presented in \cite{thieblin2019survey} are used to generate the candidate for the \kword{Type element} and \kword{Schema elements}.
+\tabref{overviewElementMappings} shows a schema description for the schema of \figref{sampleRawData} and generated ontology entities for its elements. For example, the objects' type in \figref{sampleRawData} can be described by the keyword `parking facility'. Using the latter description, the classes \kword{mv:ParkingFacility} and \kword{sc:Park} are generated to type the objects. Similarly, the schema element \kword{TOTAL} is described using the keywords `capacity' and `total' using which the class \kword{mv:Capacity} and data property \kword{sc:totalTime} are candidates generated to model it. The candidate proposal \kword{sc:totalTime} is not appropriate to model \kword{TOTAL} as its semantics is not compatible with the latter. To determine the appropriateness of an entity, we also generated a confidence. For the sake of simplicity, we omit this information from \tabref{overviewElementMappings}.
 
 \begin{comment}
 For example, suppose the \kword{Type Description} include the keyword `parking facility' to describe the objects' type in \figref{sampleRawData}. This description is used to generate candidate classes that include \kword{mv:ParkingFacility} and \kword{sc:Park}.
@@ -94,19 +101,21 @@ Similarly, the candidate data property generated for \kword{lon} is \kword{wgs84
 %\vspace{-1cm}
 
 \paragraph{Generate candidate mappings}
-Candidate mappins are build in two steps.
-First, candidate entities are combine with a cartesian product, producing a set of \kword{combination of mappings}
-Where a \kword{combination of mappings} consists of a candidate class for typing the object, that we refer as the \emph{type class}, and a candidate data property or class for each schema elements.
-\tabref{overviewCombinationsElements} shows all combinations generated from the candidate entities in \tabref{overviewElementMappings}. As we can see, in each combination, there is one candidate entity for the type class and schema elements.
+Candidate mappings are build in two steps.
+First, candidate entities are combined with a cartesian product, producing a set of \hyphenation{\kword{combination of mappings}}
+where a  \kword{combination of mappings} consists of a candidate class for typing the object, that we refer as the \emph{type class}, and a candidate data property or class for each schema elements.
+\tabref{overviewCombinationsElements} shows all combinations generated from the candidate entities in \tabref{overviewElementMappings}. As we can see, in each combination, there is one candidate entity for the type class and one for each schema element.
 In a second step, we keep \kword{combination of mappings} where we can assess the existence of a path between the \kword{type class} and candidate entities for the \kword{schema element}. These paths are identified using patterns that we have defined. They exploit the graph structure of ontologies. 
-For example, \figref{combinationNoPath} shows the first combination from \tabref{overviewCombinationsElements} and the required paths, illustrated as dotted lines, that will be generated at this step. It is possible that more than one paths or no paths exist between some entities. 
+For example, \figref{combinationNoPath} shows the first combination from \tabref{overviewCombinationsElements} and the required paths, illustrated as dotted lines, that will be generated at this step. It is possible that more than one path or no path exist between some entities. 
 We then obtain a set of \kword{candidate mappings}.
 
 
-A combination and the required paths makes up one initial mapping. To choose an initial mapping and further customize it by choosing and validating the paths, a user interface is provided.
 
-\paragraph{Refine candidate mappings}
-At this step the end-user can choose a final mapping in the set of \kword{candidate mappings} and refine it. Indeed, in some cases \kword{schema element} are modeled by class, the choice is up to the end-user to select the data property, in a predefined list, to associate the value.
+\paragraph{Generate final mapping}
+A user interface is provided to allow choosing and refining a \kword{candidate mapping} to obtain the \kword{final mapping}. There are cases where a \kword{schema element} may be modeled by a class. In these cases, data properties containing the latter class in their domains may be used to specify the values. Refining consists in choosing the appropriate data property.
+
+
+
 
 %\figref{sampleOntologyRawData} is a possible result with some of the paths generated. 
 
@@ -118,23 +127,24 @@ At this step the end-user can choose a final mapping in the set of \kword{candid
 \begin{figure}
 	\centering
 	\includegraphics[scale=0.4]{images/combinationNoPath.pdf}
-	\caption{Candidate mapping for first combination without generated paths}
+	\caption{Candidate mappings for first combination without generated paths}
 	\label{fig:combinationNoPath}
 \end{figure}
 %\vspace{-1cm}
 
 \section{Implementation}\label{sec:implementation}
-An overview of our implementation is shown in \figref{OverviewImplementation}. Core to this implementation is the \kword{RDFizer} that generate initial mappings using the approach described in the previous section. To facilitate human intervention,
-we provide a graphical \kword{User Interface}. Using the interface, users can upload the raw data in the CSV format and may enrich it with keywords to generate the \kword{Schema description}. The \kword{User Interface} interacts with the \kword{RDFizer} via a \kword{Web Service}. Eventually, on obtaining the initial mappings, one of them is chosen and, refined and validated by the end-user and sent to the web service together with the raw data for transformation to RDF.
+An overview of our implementation, SAURON, is shown in \figref{OverviewImplementation}. Core to this implementation is the \kword{RDFizer} that generate final mappings using the approach described in the previous section. To facilitate human intervention,
+we provide a graphical \kword{User Interface}. Using the interface, users can upload the raw data in the CSV format and may enrich it with keywords to generate the \kword{Schema description}. The \kword{User Interface} interacts with the \kword{RDFizer} via a \kword{Web Service}. Eventually, on obtaining the candidate mappings, one of them is chosen and refined and validated by the end-user and sent to the web service together with the raw data for transformation to RDF. This is done with SPARQL-Generate in the current implementation.
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.55]{images/OverviewImplementation.pdf}
+	\includegraphics[scale=0.50]{images/OverviewImplementation.pdf}
 	\caption{Overview of Implementation}
 	\label{fig:OverviewImplementation}
 \end{figure}
 
-The user interface is a web application implemented using the JavaScript library \emph{React}\footnote{\url{https://reactjs.org/}}. The video shows the use of the interface to generate mappings for the CSV parking dataset in \secref{approach}. As it can be seen, the user interface has three main parts. The top left part is focused on the raw data that is imported using the \kword{import CSV} menu item. On clicking on a column, keywords can be entered. The bottom left part shows the initial mappings and on selecting one of them, its corresponding description graph is rendered on the right part. The human expert can interact with different part of the latter graph and select and validate the paths. 
+The user interface is a web application implemented using the JavaScript library \emph{React}\footnote{\url{https://reactjs.org/}}. The video available online\footnote{\url{https://youtu.be/LKZH4gs7sNQ}} shows the use of the interface to generate mappings for the CSV parking dataset in \secref{approach}. 
+As it can be seen, the user interface has three main parts. The top left part is focused on the raw data that is imported using the \kword{import CSV} menu item. On clicking on a column, keywords can be entered. The bottom left part shows the candidate mappings and on selecting one of them, its corresponding description graph is rendered on the right part. The end-user can interact with different part of the latter graph and select and validate the paths. 
 
 %For each possible mapping in the bottom right part, different pieces of information are provided namely: score, type class, number of classes/data properties and finally number of (un)mapped columns. Two main refinements are possible for each possible mapping. Firstly, data properties can be specified in class mappings. Secondly, ontology entities can be changed and paths can be re-generated for any schema element. This gives the user full flexibility to change and adapt a particular possible mapping.     
 
